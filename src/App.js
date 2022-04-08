@@ -42,6 +42,8 @@ function App() {
         .then((result) => {
           const user = result.user;
           console.log(user);
+          setEmail("");
+          setPassword("");
         })
         .catch((error) => console.log(error));
     }
@@ -50,7 +52,7 @@ function App() {
   return (
     <div>
       <div className="w-50 mx-auto mt-5">
-        <h1 className="text-primary">Registration Page</h1>
+        <h1 className="text-primary">Please Register</h1>
         <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -82,7 +84,7 @@ function App() {
           </Form.Group>
           <p className="text-danger">{error}</p>
           <Button variant="primary" type="submit">
-            Submit
+            Register
           </Button>
         </Form>
       </div>
