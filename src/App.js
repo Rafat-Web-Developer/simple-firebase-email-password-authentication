@@ -7,6 +7,8 @@ import app from "./firebase.init";
 const auth = getAuth(app);
 
 function App() {
+  const [validated, setValidated] = useState(false);
+  const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,19 +22,36 @@ function App() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-      })
-      .catch((error) => console.log(error));
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    }
+    setValidated(true);
+
+    if (!/(?=.*?[#?!@$%^&*-])/.test(password)) {
+      setError(
+        "Provide a valid password (Must contain at least one special character"
+      );
+      return;
+    }
+    setError("");
+
+    if (validated) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          const user = result.user;
+          console.log(user);
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
     <div>
       <div className="w-50 mx-auto mt-5">
         <h1 className="text-primary">Registration Page</h1>
-        <Form onSubmit={handleFormSubmit}>
+        <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -44,6 +63,9 @@ function App() {
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
             </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid email.
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -54,7 +76,11 @@ function App() {
               placeholder="Password"
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid password.
+            </Form.Control.Feedback>
           </Form.Group>
+          <p className="text-danger">{error}</p>
           <Button variant="primary" type="submit">
             Submit
           </Button>
