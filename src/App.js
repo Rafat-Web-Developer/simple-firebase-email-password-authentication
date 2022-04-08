@@ -1,10 +1,23 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
 function App() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailField = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordField = (e) => {
+    setPassword(e.target.value);
+  };
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    console.log("Submit");
+    console.log("Email = ", email);
+    console.log("Password = ", password);
   };
 
   return (
@@ -14,7 +27,12 @@ function App() {
         <Form onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control
+              onBlur={handleEmailField}
+              type="email"
+              placeholder="Enter email"
+              required
+            />
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
             </Form.Text>
@@ -22,7 +40,12 @@ function App() {
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              onBlur={handlePasswordField}
+              type="password"
+              placeholder="Password"
+              required
+            />
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit
