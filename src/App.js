@@ -7,10 +7,15 @@ import app from "./firebase.init";
 const auth = getAuth(app);
 
 function App() {
+  const [registered, setRegistered] = useState(false);
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleRegisteredCheck = (e) => {
+    setRegistered(e.target.checked);
+  };
 
   const handleEmailField = (e) => {
     setEmail(e.target.value);
@@ -52,7 +57,9 @@ function App() {
   return (
     <div>
       <div className="w-50 mx-auto mt-5">
-        <h1 className="text-primary">Please Register</h1>
+        <h1 className="text-primary">
+          Please {registered ? "Login" : "Register"}
+        </h1>
         <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -82,9 +89,16 @@ function App() {
               Please provide a valid password.
             </Form.Control.Feedback>
           </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check
+              onChange={handleRegisteredCheck}
+              type="checkbox"
+              label="Already Register?"
+            />
+          </Form.Group>
           <p className="text-danger">{error}</p>
           <Button variant="primary" type="submit">
-            Register
+            {registered ? "Login" : "Register"}
           </Button>
         </Form>
       </div>
