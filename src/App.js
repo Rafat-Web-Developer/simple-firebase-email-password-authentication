@@ -1,7 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import app from "./firebase.init";
 
 const auth = getAuth(app);
@@ -43,14 +47,31 @@ function App() {
     setError("");
 
     if (validated) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((result) => {
-          const user = result.user;
-          console.log(user);
-          setEmail("");
-          setPassword("");
-        })
-        .catch((error) => console.log(error));
+      if (registered) {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((result) => {
+            const user = result.user;
+            console.log(user);
+            setEmail("");
+            setPassword("");
+          })
+          .catch((error) => {
+            setError(error.message);
+            console.log(error);
+          });
+      } else {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((result) => {
+            const user = result.user;
+            console.log(user);
+            setEmail("");
+            setPassword("");
+          })
+          .catch((error) => {
+            setError(error.message);
+            console.log(error);
+          });
+      }
     }
   };
 
