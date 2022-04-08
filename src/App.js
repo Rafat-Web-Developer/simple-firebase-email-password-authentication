@@ -2,11 +2,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Form } from "react-bootstrap";
 
 function App() {
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    console.log("Submit");
+  };
+
   return (
     <div>
       <div className="w-50 mx-auto mt-5">
         <h1 className="text-primary">Registration Page</h1>
-        <Form>
+        <Form onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control type="email" placeholder="Enter email" />
